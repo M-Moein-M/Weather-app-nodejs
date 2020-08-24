@@ -32,7 +32,11 @@
 </div>
 
 <div>
-    <button id="check-in-current-coords" type="button">check in current coordinates</button>
+    <button id="check-in-current-coords" type="button">Check in current data</button>
+</div>
+
+<div>
+    <a href="all-data.html">Check out all the data</a>
 </div>
 
 <script>
@@ -46,37 +50,41 @@
                 const lon = (latlon.coords.longitude.toFixed(2)).toString();
 
                 const data = await requestWeatherData(lat, lon);
-
-                // using data we got back from the server
-                const openWeatherData = data.openWeatherData;
-                const openAirQualityData = data.openAirQualityData;
-
-                // updating DOM using openWeatherData
-                document.getElementById('latitude').innerText = lat + '°';
-                document.getElementById('longitude').innerText = lon + '°';
-                document.getElementById('city-name').innerText = openWeatherData.cityName;
-                document.getElementById('temperature').innerText = openWeatherData.temp + '°C';
-                document.getElementById('max-temp').innerText = openWeatherData.temp_max + '°C';
-                document.getElementById('min-temp').innerText = openWeatherData.temp_min + '°C';
-
-                // updating DOM using openAirQualityData
-                try {
-                    const qualityData = openAirQualityData.results[0];
-                    document.getElementById('quality-location').innerText = qualityData.location;
-                    document.getElementById('quality-parameter').innerText = qualityData.measurements[0].parameter;
-                    document.getElementById('quality-value').innerText = qualityData.measurements[0].value;
-                    document.getElementById('quality-unit').innerText = qualityData.measurements[0].unit;
-                    document.getElementById('quality-last-update').innerText = qualityData.measurements[0].lastUpdated;
-                    document.getElementById('air-quality-data').classList.remove('hide');
-                } catch (e) {
-                    document.getElementById('air-quality-data').classList.add('hide');
-                    document.getElementById('air-quality-not-available').classList.remove('hide');
-                    console.log(e);
-                }
-
+                updateDOM(data);
             });
         } else {
             console.log('Geolocation information not available');
+        }
+    }
+
+    function updateDOM(data){  // updates DOM elements with the data received from server
+        // using data we got back from the server
+        const lat = data.latitude;
+        const lon = data.longitude;
+        const openWeatherData = data.openWeatherData;
+        const openAirQualityData = data.openAirQualityData;
+
+        // updating DOM using openWeatherData
+        document.getElementById('latitude').innerText = lat + '°';
+        document.getElementById('longitude').innerText = lon + '°';
+        document.getElementById('city-name').innerText = openWeatherData.cityName;
+        document.getElementById('temperature').innerText = openWeatherData.temp + '°C';
+        document.getElementById('max-temp').innerText = openWeatherData.temp_max + '°C';
+        document.getElementById('min-temp').innerText = openWeatherData.temp_min + '°C';
+
+        // updating DOM using openAirQualityData
+        try {
+            const qualityData = openAirQualityData.results[0];
+            document.getElementById('quality-location').innerText = qualityData.location;
+            document.getElementById('quality-parameter').innerText = qualityData.measurements[0].parameter;
+            document.getElementById('quality-value').innerText = qualityData.measurements[0].value;
+            document.getElementById('quality-unit').innerText = qualityData.measurements[0].unit;
+            document.getElementById('quality-last-update').innerText = qualityData.measurements[0].lastUpdated;
+            document.getElementById('air-quality-data').classList.remove('hide');
+        } catch (e) {
+            document.getElementById('air-quality-data').classList.add('hide');
+            document.getElementById('air-quality-not-available').classList.remove('hide');
+            console.log(e);
         }
     }
 

@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 // creating database
 const Datastore = require('nedb');
-const database = new Datastore({filename:'database.db'});
+const database = new Datastore({filename: 'database.db'});
 database.loadDatabase();
 
 app = express();
@@ -35,7 +35,12 @@ app.get('/weather/:latlon', async (req, res) => {
     delete openAirQualityData.meta; // removing useless attribute
 
     // putting data form two api together and send it back to client
-    responseObject = {openWeatherData: openWeatherData.main, openAirQualityData: openAirQualityData};
+    responseObject = {
+        latitude: lat,
+        longitude: lon,
+        openWeatherData: openWeatherData.main,
+        openAirQualityData: openAirQualityData
+    };
     responseObject.openWeatherData.cityName = openWeatherData.name;  // setting name attribute to show on DOM
     res.send(responseObject);
 });
