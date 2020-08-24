@@ -7,8 +7,8 @@
 <body>
 
 <h1>WEATHER APP</h1>
-<p>Latitude: <span class="latitude"></span></p>
-<p>Longitude: <span class="longitude"></span></p>
+<p>Latitude: <span id="latitude"></span></p>
+<p>Longitude: <span id="longitude"></span></p>
 
 <script>
     getWeatherData();
@@ -16,8 +16,18 @@
     function getWeatherData() {
         if ('geolocation' in navigator) {
             console.log('Geolocation information available');
-            navigator.geolocation.getCurrentPosition(latlon => {
-                console.log(latlon)
+            navigator.geolocation.getCurrentPosition(async latlon => {
+                console.log(latlon.coords);
+                const lat = latlon.coords.latitude.toFixed(2).toString();
+                const lon = latlon.coords.longitude.toFixed(2).toString();
+                document.getElementById('latitude').innerText = lat;
+                document.getElementById('longitude').innerText = lon;
+
+                const url = `/weather/${lat},${lon}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                console.log(data);
+
             });
         } else {
             console.log('Geolocation information not available');
