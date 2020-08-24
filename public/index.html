@@ -5,6 +5,24 @@
     <title>Weather app</title>
 </head>
 <body>
+
 <h1>WEATHER APP</h1>
+<p>Latitude: <span class="latitude"></span></p>
+<p>Longitude: <span class="longitude"></span></p>
+
+<script>
+    getWeatherData();
+
+    function getWeatherData() {
+        if ('geolocation' in navigator) {
+            console.log('Geolocation information available');
+            navigator.geolocation.getCurrentPosition(latlon => {
+                console.log(latlon)
+            });
+        } else {
+            console.log('Geolocation information not available');
+        }
+    }
+</script>
 </body>
 </html>

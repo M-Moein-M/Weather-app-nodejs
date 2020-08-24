@@ -7,3 +7,4 @@ app.use(express.json());
 app.listen(port, function () {
     console.log(`server running on port: ${port}`);
 });
+
