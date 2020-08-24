@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather app</title>
-    <style>
-        .hide {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1>WEATHER APP</h1>
-<div>
-
+<div id="data-monitor">
     <p>Latitude: <span id="latitude">Loading...</span> Longitude: <span id="longitude">Loading...</span></p>
     <p> City name: <span id="city-name">Loading...</span></p>
     <p>Current temperature: <span id="temperature">Loading...</span></p>
     <p>Maximum temperature: <span id="max-temp"></span></p>
     <p>Minimum temperature: <span id="min-temp"></span></p>
 
+
+    <div class="hide" id="air-quality-not-available">
+        <h5>Air quality data is not available in your region</h5>
+    </div>
     <div class="hide" id="air-quality-data">
         <p>Air quality data: At <span id="quality-location">_</span>
             .The concentration of particular matter(<span id="quality-parameter">_</span>)
             is <span id="quality-value">_</span><span id="quality-unit">_</span></p>
         <p>Data last updated on <span id="quality-last-update">_</span></p>
     </div>
-    <div class="hide" id="air-quality-not-available">
-        <h5>Air quality data is not available in your region</h5>
+
+
+    <div>
+        <button id="check-in-current-coords" type="button">Check in current data</button>
     </div>
-</div>
 
-<div>
-    <button id="check-in-current-coords" type="button">Check in current data</button>
-</div>
-
-<div>
-    <a href="all-data.html">Check out all the data</a>
+    <div>
+        <a href="all-data.html">
+            <button>Check all the data</button>
+        </a>
+    </div>
 </div>
 
 <script>
@@ -57,7 +56,7 @@
         }
     }
 
-    function updateDOM(data){  // updates DOM elements with the data received from server
+    function updateDOM(data) {  // updates DOM elements with the data received from server
         // using data we got back from the server
         const lat = data.latitude;
         const lon = data.longitude;
@@ -103,10 +102,10 @@
             mode: 'cors',
             cache: 'no-cache',
             credentials: 'same-origin',
-            headers:{'Content-Type':'application/json'},
+            headers: {'Content-Type': 'application/json'},
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body:JSON.stringify(data),
+            body: JSON.stringify(data),
 
         });
     }

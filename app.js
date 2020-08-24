@@ -50,3 +50,9 @@ app.post('/api/save', (req, res) => {
     database.insert(req.body);
     res.send({status: 'success'});
 });
+
+app.get('/api/database', (req, res)=>{
+    database.find({}, function (err, docs) {
+        res.send(docs);
+    });
+});
