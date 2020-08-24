@@ -7,8 +7,16 @@
 <body>
 
 <h1>WEATHER APP</h1>
-<p>Latitude: <span id="latitude"></span></p>
-<p>Longitude: <span id="longitude"></span></p>
+<div>
+    <p>Latitude: <span id="latitude">Loading...</span></p>
+    <p>Longitude: <span id="longitude">Loading...</span></p>
+    <p> City name: <span id="city-name">Loading...</span></p>
+    <p>Current temperature: <span id="temperature">Loading...</span></p>
+    <p>Maximum temperature: <span id="max-temp"></span></p>
+    <p>Minimum temperature: <span id="min-temp"></span></p>
+
+</div>
+
 
 <script>
     getWeatherData();
@@ -17,15 +25,20 @@
         if ('geolocation' in navigator) {
             console.log('Geolocation information available');
             navigator.geolocation.getCurrentPosition(async latlon => {
-                console.log(latlon.coords);
-                const lat = latlon.coords.latitude.toFixed(2).toString();
-                const lon = latlon.coords.longitude.toFixed(2).toString();
-                document.getElementById('latitude').innerText = lat;
-                document.getElementById('longitude').innerText = lon;
+                const lat = (latlon.coords.latitude.toFixed(4)).toString();
+                const lon = (latlon.coords.longitude.toFixed(4)).toString();
 
+                // sending fetch request to the server
                 const url = `/weather/${lat},${lon}`;
                 const res = await fetch(url);
                 const data = await res.json();
+
+                document.getElementById('latitude').innerText = lat + '°';
+                document.getElementById('longitude').innerText = lon + '°';
+                document.getElementById('city-name').innerText = data.cityName;
+                document.getElementById('temperature').innerText = data.temp + '°C';
+                document.getElementById('max-temp').innerText = data.temp_max + '°C';
+                document.getElementById('min-temp').innerText = data.temp_min + '°C';
                 console.log(data);
 
             });
