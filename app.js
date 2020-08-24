@@ -1,6 +1,13 @@
 const express = require('express');
 const fetch = require('node-fetch');
+
+// creating database
+const Datastore = require('nedb');
+const database = new Datastore({filename:'database.db'});
+database.loadDatabase();
+
 app = express();
+
 const port = 3000;
 app.use(express.static('public'));
 app.use(express.json({limit: '2mb'}));
@@ -25,6 +32,7 @@ app.get('/weather/:latlon', async (req, res) => {
     const openAirQualityUrl = `https://api.openaq.org/v1/latest?coordinates=${lat},${lon}`;
     const openAirQualityResponse = await fetch(openAirQualityUrl);  // sending fetch request to 'open air quality' api
     const openAirQualityData = await openAirQualityResponse.json();  // waiting for response from 'open air quality'
+    delete openAirQualityData.meta; // removing useless attribute
 
     // putting data form two api together and send it back to client
     responseObject = {openWeatherData: openWeatherData.main, openAirQualityData: openAirQualityData};
@@ -34,6 +42,6 @@ app.get('/weather/:latlon', async (req, res) => {
 
 
 app.post('/api/save', (req, res) => {
-    console.log(req.body);
-    res.send({status:'success'});
+    database.insert(req.body);
+    res.send({status: 'success'});
 });
