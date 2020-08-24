@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather app</title>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,6 +20,15 @@
     <p>Maximum temperature: <span id="max-temp"></span></p>
     <p>Minimum temperature: <span id="min-temp"></span></p>
 
+    <div class="hide" id="air-quality-data">
+        <p>Air quality data: At <span id="quality-location">_</span>
+            .The concentration of particular matter(<span id="quality-parameter">_</span>)
+            is <span id="quality-value">_</span><span id="quality-unit">_</span></p>
+        <p>Data last updated on <span id="quality-last-update">_</span></p>
+    </div>
+    <div class="hide" id="air-quality-not-available" >
+        <h5>Air quality data is not available in your region</h5>
+    </div>
 </div>
 
 
@@ -25,21 +39,40 @@
         if ('geolocation' in navigator) {
             console.log('Geolocation information available');
             navigator.geolocation.getCurrentPosition(async latlon => {
-                const lat = (latlon.coords.latitude.toFixed(4)).toString();
-                const lon = (latlon.coords.longitude.toFixed(4)).toString();
+                const lat = (latlon.coords.latitude.toFixed(2)).toString();
+                const lon = (latlon.coords.longitude.toFixed(2)).toString();
 
                 // sending fetch request to the server
                 const url = `/weather/${lat},${lon}`;
                 const res = await fetch(url);
                 const data = await res.json();
 
+                // using data we got back from the server
+                const openWeatherData = data.openWeatherData;
+                const openAirQualityData = data.openAirQualityData;
+
+                // updating DOM using openWeatherData
                 document.getElementById('latitude').innerText = lat + '°';
                 document.getElementById('longitude').innerText = lon + '°';
-                document.getElementById('city-name').innerText = data.cityName;
-                document.getElementById('temperature').innerText = data.temp + '°C';
-                document.getElementById('max-temp').innerText = data.temp_max + '°C';
-                document.getElementById('min-temp').innerText = data.temp_min + '°C';
-                console.log(data);
+                document.getElementById('city-name').innerText = openWeatherData.cityName;
+                document.getElementById('temperature').innerText = openWeatherData.temp + '°C';
+                document.getElementById('max-temp').innerText = openWeatherData.temp_max + '°C';
+                document.getElementById('min-temp').innerText = openWeatherData.temp_min + '°C';
+
+                // updating DOM using openAirQualityData
+                try {
+                    const qualityData = openAirQualityData.results[0];
+                    document.getElementById('quality-location').innerText = qualityData.location;
+                    document.getElementById('quality-parameter').innerText = qualityData.measurements[0].parameter;
+                    document.getElementById('quality-value').innerText = qualityData.measurements[0].value;
+                    document.getElementById('quality-unit').innerText = qualityData.measurements[0].unit;
+                    document.getElementById('quality-last-update').innerText = qualityData.measurements[0].lastUpdated;
+                    document.getElementById('air-quality-data').classList.remove('hide');
+                } catch (e) {
+                    document.getElementById('air-quality-data').classList.add('hide');
+                    document.getElementById('air-quality-not-available').classList.remove('hide');
+                    console.log(e);
+                }
 
             });
         } else {
