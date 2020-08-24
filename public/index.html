@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Weather app</title>
     <style>
-        .hide{
+        .hide {
             display: none;
         }
     </style>
@@ -13,8 +13,8 @@
 
 <h1>WEATHER APP</h1>
 <div>
-    <p>Latitude: <span id="latitude">Loading...</span></p>
-    <p>Longitude: <span id="longitude">Loading...</span></p>
+
+    <p>Latitude: <span id="latitude">Loading...</span> Longitude: <span id="longitude">Loading...</span></p>
     <p> City name: <span id="city-name">Loading...</span></p>
     <p>Current temperature: <span id="temperature">Loading...</span></p>
     <p>Maximum temperature: <span id="max-temp"></span></p>
@@ -26,11 +26,14 @@
             is <span id="quality-value">_</span><span id="quality-unit">_</span></p>
         <p>Data last updated on <span id="quality-last-update">_</span></p>
     </div>
-    <div class="hide" id="air-quality-not-available" >
+    <div class="hide" id="air-quality-not-available">
         <h5>Air quality data is not available in your region</h5>
     </div>
 </div>
 
+<div>
+    <button id="check-in-current-coords" type="button">check in current coordinates</button>
+</div>
 
 <script>
     getWeatherData();
@@ -42,10 +45,7 @@
                 const lat = (latlon.coords.latitude.toFixed(2)).toString();
                 const lon = (latlon.coords.longitude.toFixed(2)).toString();
 
-                // sending fetch request to the server
-                const url = `/weather/${lat},${lon}`;
-                const res = await fetch(url);
-                const data = await res.json();
+                const data = await requestWeatherData(lat, lon);
 
                 // using data we got back from the server
                 const openWeatherData = data.openWeatherData;
@@ -79,6 +79,42 @@
             console.log('Geolocation information not available');
         }
     }
+
+    async function requestWeatherData(lat, lon) {
+        // sending fetch request to the server
+        const url = `/weather/${lat},${lon}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    }
+
+    async function saveWeatherData(data) { // input data is same as we receive from server
+        const saveDataURL = '/api/save';
+        const saveResponse = await fetch(saveDataURL, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers:{'Content-Type':'application/json'},
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body:JSON.stringify(data),
+
+        });
+        console.log('save request sent');
+    }
+
+    document.getElementById('check-in-current-coords').addEventListener('click', async function () {
+        // get data using  current location of client
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(async (geolocation) => {
+                const lat = (geolocation.coords.latitude.toFixed(2)).toString();
+                const lon = (geolocation.coords.longitude.toFixed(2)).toString();
+                const data = await requestWeatherData(lat, lon);
+                await saveWeatherData(data);
+            });
+        }
+    });
 </script>
 </body>
 </html>

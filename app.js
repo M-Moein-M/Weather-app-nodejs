@@ -27,7 +27,13 @@ app.get('/weather/:latlon', async (req, res) => {
     const openAirQualityData = await openAirQualityResponse.json();  // waiting for response from 'open air quality'
 
     // putting data form two api together and send it back to client
-    responseObject = {openWeatherData : openWeatherData.main, openAirQualityData:openAirQualityData};
+    responseObject = {openWeatherData: openWeatherData.main, openAirQualityData: openAirQualityData};
     responseObject.openWeatherData.cityName = openWeatherData.name;  // setting name attribute to show on DOM
     res.send(responseObject);
+});
+
+
+app.post('/api/save', (req, res) => {
+    console.log(req.body);
+    res.send({status:'success'});
 });
