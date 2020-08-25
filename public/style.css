@@ -1,8 +1,8 @@
-*{
+* {
     text-decoration: none;
 }
 
-button{
+button {
     padding: 20px;
     background-color: #424242;
     border: none;
@@ -12,21 +12,19 @@ button{
     color: #b6b6b6;
 }
 
-button:hover{
+button:hover {
     transform: scale(1.1);
 }
 
 
-input{
+input {
     width: 200px;
     height: 50px;
     border-radius: 5px;
     margin: 10px 0 10px 0;
 }
 
-
-
-.flex-container{
+.flex-container {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -34,8 +32,7 @@ input{
     justify-content: center;
 }
 
-
-label{
+label {
     display: none;
 }
 
