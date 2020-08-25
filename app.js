@@ -1,6 +1,8 @@
 const express = require('express');
 const fetch = require('node-fetch');
 
+require('dotenv').config();
+
 // creating database
 const Datastore = require('nedb');
 const database = new Datastore({filename: 'database.db'});
@@ -23,7 +25,7 @@ app.get('/weather/:latlon', async (req, res) => {
     let responseObject; // the json that we sent back for response
 
     // using 'open weather' api
-    const api_key = 'd328f2c99bab8eddaaf22e3a0ae087a8';
+    const api_key = process.env.OPEN_WEATHER_API_KEY;
     const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${api_key}`;
     const openWeatherResponse = await fetch(openWeatherUrl); // sending fetch request to 'open weather' api
     const openWeatherData = await openWeatherResponse.json(); // waiting for response from 'open weather'
