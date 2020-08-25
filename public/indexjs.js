@@ -105,10 +105,11 @@ document.getElementById('send-form').addEventListener('click', async function ()
         const serverResponse = await requestWeatherData(latitude, longitude);
         await saveWeatherData(serverResponse);
         document.getElementById('city-log').innerText = 'Enter you city name';
+        document.getElementById('city-name-input').value = '';
     } catch (err) {
         console.log(err);
         document.getElementById('city-log').innerText = 'Enter a valid city name';
-        const cityName = document.getElementById('city-name-input').value = '';
+        document.getElementById('city-name-input').value = '';
         return;
     }
 });

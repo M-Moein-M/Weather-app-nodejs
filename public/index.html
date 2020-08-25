@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather app</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
 <h1>WEATHER APP</h1>
 <div id="data-monitor">
-    <p>Latitude: <span id="latitude">Loading...</span> Longitude: <span id="longitude">Loading...</span></p>
-    <p> City name: <span id="city-name">Loading...</span></p>
-    <p>Current temperature: <span id="temperature">Loading...</span></p>
-    <p>Maximum temperature: <span id="max-temp"></span></p>
-    <p>Minimum temperature: <span id="min-temp"></span></p>
+    <div class="flex-container-column">
+        <p>Latitude: <span id="latitude">Loading...</span> Longitude: <span id="longitude">Loading...</span></p>
+        <p> City name: <span id="city-name">Loading...</span></p>
+        <p>Current temperature: <span id="temperature">Loading...</span></p>
+        <p>Maximum temperature: <span id="max-temp"></span></p>
+        <p>Minimum temperature: <span id="min-temp"></span></p>
 
 
-    <div class="hide" id="air-quality-not-available">
-        <h5>Air quality data is not available in your region</h5>
+        <div class="hide" id="air-quality-not-available">
+            <h5>Air quality data is not available in your region</h5>
+        </div>
+        <div class="hide" id="air-quality-data">
+            <p>Air quality data: At <span id="quality-location">_</span>
+                .The concentration of particular matter(<span id="quality-parameter">_</span>)
+                is <span id="quality-value">_</span><span id="quality-unit">_</span></p>
+            <p>Data last updated on <span id="quality-last-update">_</span></p>
+        </div>
     </div>
-    <div class="hide" id="air-quality-data">
-        <p>Air quality data: At <span id="quality-location">_</span>
-            .The concentration of particular matter(<span id="quality-parameter">_</span>)
-            is <span id="quality-value">_</span><span id="quality-unit">_</span></p>
-        <p>Data last updated on <span id="quality-last-update">_</span></p>
-    </div>
 
-
-    <div>
+    <div class="flex-container">
         <button id="check-in-current-coords" type="button">Check in current data</button>
         <a href="all-data.html">
             <button>Check all the data</button>
@@ -38,10 +41,15 @@
 
 <div id="new-city-div" class="hide">
     <label class="hide" for="city-name">Enter you city name</label>
+
     <p id="city-log">Enter you city name</p>
-    <input id="city-name-input" type="text">
-    <button id="send-form">Send</button>
-    <button id="return-back">Return back</button>
+    <div class="flex-container">
+        <input id="city-name-input" type="text">
+    </div>
+    <div class="flex-container">
+        <button id="send-form">Send</button>
+        <button id="return-back">Return back</button>
+    </div>
 </div>
 
 <script src="indexjs.js"></script>
