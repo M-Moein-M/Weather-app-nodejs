@@ -4,11 +4,12 @@
 
 button{
     padding: 20px;
-    background-color: skyblue;
+    background-color: #424242;
     border: none;
     border-radius: 5px;
     margin: 10px;
     transition-duration: 0.2s;
+    color: #b6b6b6;
 }
 
 button:hover{
@@ -39,7 +40,7 @@ label{
 }
 
 .hide {
-    opacity: 0;
+    display: none;
 }
 
 #map {

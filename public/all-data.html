@@ -44,9 +44,10 @@
             let marker = L.marker([item.latitude, item.longitude]).addTo(mymap);
             let text = `Latitude: ${item.latitude} Longitude: ${item.longitude} City name: ${item.openWeatherData.cityName} Temperature: ${item.openWeatherData.temp}°C`;
             try{  // checks if air quality data is not available
-                text += `Air quality data: At ${item.openAirQualityData.location}. The concentration of particular matter(${item.openAirQualityData.measurements[0].parameter})
-            is ${item.openAirQualityData.measurements[0].value}. Data last updated on ${item.openAirQualityData.measurements[0].lastUpdated}`;
-            }catch{
+                text += `Air quality data: At ${item.openAirQualityData.results[0].location}. The concentration of particular matter(${item.openAirQualityData.results[0].measurements[0].parameter})
+            is ${item.openAirQualityData.results[0].measurements[0].value}. Data last updated on ${item.openAirQualityData.results[0].measurements[0].lastUpdated}`;
+            }catch(err){
+                console.log(err);
                 text += '<br>NO AIR QUALITY AVAILABLE';
             }
             marker.bindPopup(text);

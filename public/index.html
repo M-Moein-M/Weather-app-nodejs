@@ -29,13 +29,19 @@
 
     <div>
         <button id="check-in-current-coords" type="button">Check in current data</button>
-    </div>
-
-    <div>
         <a href="all-data.html">
             <button>Check all the data</button>
         </a>
+        <button id="show-form">Add specific city to data base</button>
     </div>
+</div>
+
+<div id="new-city-div" class="hide">
+    <label class="hide" for="city-name">Enter you city name</label>
+    <p id="city-log">Enter you city name</p>
+    <input id="city-name-input" type="text">
+    <button id="send-form">Send</button>
+    <button id="return-back">Return back</button>
 </div>
 
 <script>
@@ -119,6 +125,38 @@
                 const data = await requestWeatherData(lat, lon);
                 await saveWeatherData(data);
             });
+        }
+    });
+
+    document.getElementById('show-form').addEventListener('click', function () {
+        document.getElementById('data-monitor').classList.add('hide');
+        document.getElementById('new-city-div').classList.remove('hide');
+
+    });
+    document.getElementById('return-back').addEventListener('click', function () {
+        document.getElementById('data-monitor').classList.remove('hide');
+        document.getElementById('new-city-div').classList.add('hide');
+    });
+    document.getElementById('send-form').addEventListener('click', async function () {
+        try {
+            const cityName = document.getElementById('city-name-input').value;
+            document.getElementById('city-log').innerText = 'Sending data...';
+            const apiURL = `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=b5c8595f8ef94c468b95462a4728e31c`;
+            const response = await fetch(apiURL);
+            const data = await response.json();
+
+            // extracting the latitude and longitude
+            let latitude = data.results[0].geometry.lat.toFixed(2);
+            const longitude = data.results[0].geometry.lng.toFixed(2);
+
+            const serverResponse = await requestWeatherData(latitude, longitude);
+            await saveWeatherData(serverResponse);
+            document.getElementById('city-log').innerText = 'Enter you city name';
+        } catch (err) {
+            console.log(err);
+            document.getElementById('city-log').innerText = 'Enter a valid city name';
+            const cityName = document.getElementById('city-name-input').value = '';
+            return;
         }
     });
 </script>
