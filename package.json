@@ -1,0 +1,26 @@
+{
+  "name": "weather-app-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "nedb": "^1.8.0",
+    "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M-Moein-M/Weather-app-nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M-Moein-M/Weather-app-nodejs/issues"
+  },
+  "homepage": "https://github.com/M-Moein-M/Weather-app-nodejs#readme"
+}
